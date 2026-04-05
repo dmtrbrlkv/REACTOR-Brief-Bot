@@ -1,0 +1,3359 @@
+{
+  "name": "REACTOR Brief Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        -144
+      ],
+      "id": "6b8beee8-3cc6-4a38-bfb5-6374ff2070f8",
+      "name": "Telegram Trigger",
+      "webhookId": "105cc40b-f467-4677-a38f-2573c3817404",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "lCnuMnF7kl8mR1RV",
+          "name": "@reactor_brief_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+                    "rightValue": "=/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "937e3af8-bac6-4398-bea4-0c264f02d1e1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0cb4ad62-2932-44fc-a71f-e4695204ae35",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "514d6538-3487-4892-a267-530e6e846a37",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.callback_query }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "callback"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "91baabc6-660e-48fd-be33-9a20de6ff501",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2bdc8ff8-8ba6-4ac0-8de3-8e89a5cc3f75",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.document }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "document"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -384,
+        -192
+      ],
+      "id": "6f98fe8b-f559-48dc-9afb-741551bdf142",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "Привет! Я помощник по подготовке брифа на разработку агента. Что вам нужно?",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1536,
+        -528
+      ],
+      "id": "eddedf7e-1ea4-4b60-8e72-56227f303f9a",
+      "name": "Send a text message",
+      "webhookId": "57deed0e-614d-4c0f-b026-3de511339b6c",
+      "credentials": {
+        "telegramApi": {
+          "id": "lCnuMnF7kl8mR1RV",
+          "name": "@reactor_brief_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "zhnURvA8bKcfz0Ro",
+          "mode": "list",
+          "cachedResultName": "brief_bot_session",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/zhnURvA8bKcfz0Ro"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "currentKey": "={{ $('Telegram Trigger').item.json.message.from.id }}_{{ $('Edit Fields4').item.json.now }}",
+            "userId": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+          },
+          "matchingColumns": [
+            "currentKey"
+          ],
+          "schema": [
+            {
+              "id": "currentKey",
+              "displayName": "currentKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        864,
+        -528
+      ],
+      "id": "263546a5-89fa-4b76-968a-f106da8bf897",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8bc528d1-e8d8-4b21-91a4-f761256df36f",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "feeee6e8-1948-4e35-ac61-fb9305f8dd9a",
+              "name": "fromId",
+              "value": "={{ $json.fromId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1536,
+        144
+      ],
+      "id": "42dd6d57-7063-42d9-aa93-4f462282f0de",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1088,
+        48
+      ],
+      "id": "45acb1a6-406c-4076-9d1a-75ee4173a911",
+      "name": "Transcribe a recording",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        864,
+        48
+      ],
+      "id": "dc5301f9-c499-4a8a-ac2f-fe1afb857a29",
+      "name": "Get a file",
+      "webhookId": "cb82cfb6-5958-421e-b60d-8cd95646052e",
+      "credentials": {
+        "telegramApi": {
+          "id": "lCnuMnF7kl8mR1RV",
+          "name": "@reactor_brief_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39592dd7-2a68-4097-aebe-382968490c0c",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "831c03c0-15e4-43b3-9a4e-56cbfe3bf50b",
+              "name": "docURL",
+              "value": "=https://docs.google.com/document/d/{{ $json.googleDocId }}",
+              "type": "string"
+            },
+            {
+              "id": "173305c4-efc4-4195-a047-ee60145017fc",
+              "name": "message",
+              "value": "={{ $('Get row(s)1').item.json.messages }}  \nHuman: \n{{ $('Edit Fields').item.json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2432,
+        240
+      ],
+      "id": "131f9f89-95e9-4261-8672-bd4d72fdd585",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "zhnURvA8bKcfz0Ro",
+          "mode": "list",
+          "cachedResultName": "brief_bot_session",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/zhnURvA8bKcfz0Ro"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Edit Fields').item.json.fromId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        240
+      ],
+      "id": "a81b3ef6-64f2-4e23-bd68-b746f63c1dc7",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c521e126-1f82-4cd5-acc8-6335e5b800d9",
+              "name": "output",
+              "value": "={{ $json.output[1].content[0].text }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3680,
+        240
+      ],
+      "id": "4284aabf-8cff-4aa7-b399-130f50ff6ba8",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "folderId": "1KWWlIZnzj7Nz5rPaueyiW8l9TVp3Ag1-",
+        "title": "=Brief_{{ $('Telegram Trigger').item.json.message.from.id }}_{{ $json.now }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        64,
+        -528
+      ],
+      "id": "05a46a76-b3a2-4f4c-983b-96836a5feaf8",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "NLGnl1shVJrsrqnG",
+          "name": "Google Docs account n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f9f565a-c5df-4d57-93c2-4c48aeb555e1",
+              "name": "now",
+              "value": "={{ $now.format('yyyy_MM_dd_HH_mm_ss') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -528
+      ],
+      "id": "a0d4480c-ef9d-4780-b5ed-c4e62486ed52",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Create a document').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "<ПУСТОЙ БРИФ>"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -528
+      ],
+      "id": "a134df6c-0e1f-4279-a89f-82db8e2bf27f",
+      "name": "Update a document1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "NLGnl1shVJrsrqnG",
+          "name": "Google Docs account n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $('Get row(s)1').item.json.googleDocId }}:batchUpdate",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDocsOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n{\n  requests: [\n    {\n      deleteContentRange: {\n        range: {\n          startIndex: 1,\n          endIndex: $json.body.content[$json.body.content.length - 1].endIndex - 1\n        }\n      }\n    }\n  ]\n}\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        4352,
+        240
+      ],
+      "id": "a3a2765d-8d66-4fd8-a1e5-0cec14bea0d6",
+      "name": "HTTP Request3",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "NLGnl1shVJrsrqnG",
+          "name": "Google Docs account n8n"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2b18b338-73cd-4492-9f7d-8f38253fe4f3",
+              "leftValue": "={{ $('Edit Fields3').item.json.output.answers }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        6880,
+        336
+      ],
+      "id": "2cb160f6-3207-4ef9-a3ab-ee4593ae8b3e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Edit Fields').item.json.fromId }}",
+        "text": "={{ $('Edit Fields3').item.json.output.message }}\n\n{{ $('Edit Fields3').item.json.output['next question'] }}\n\n\n{{ $('Edit Fields2').item.json.docURL }}\n\nphone: {{ $('Edit Fields3').item.json.output.phone }}\n\nemail: {{ $('Edit Fields3').item.json.output.email }}\n\nuserId: {{ $('Get row(s)1').item.json.userId }}\n\nusername: {{ $('Get row(s)1').item.json.username }}\n\nссылка: t.me/{{ $('Get row(s)1').item.json.username }}\n\nemail: {{ $('Edit Fields3').item.json.output.email }}\n\ncompleted: {{ $('Edit Fields3').item.json.output.completed }}",
+        "replyMarkup": "=",
+        "forceReply": {},
+        "replyKeyboardOptions": {},
+        "replyKeyboardRemove": {},
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7168,
+        432
+      ],
+      "id": "5cf13fd7-1e5c-4cd8-b578-eec88b002c51",
+      "name": "Send a text message2",
+      "webhookId": "49860489-e04b-4af7-af20-637b3217d906",
+      "credentials": {
+        "telegramApi": {
+          "id": "lCnuMnF7kl8mR1RV",
+          "name": "@reactor_brief_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $('Edit Fields7').item.json.botToken }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n{\n  chat_id: $('Edit Fields').item.json.fromId,\n  text: $('Edit Fields3').item.json.output.message \n        + \"\\n\\n\" \n        + ($('Edit Fields3').item.json.output[\"next question\"] || \"\"),\n  reply_markup: $('Edit Fields3').item.json.output.answers\n    ? {\n        inline_keyboard: $('Edit Fields3').item.json.output.answers.reduce((rows, answer, index) => {\n          if (index % 2 === 0) rows.push([]);\n\n          rows[rows.length - 1].push({\n            text: answer,\n            callback_data: answer\n          });\n\n          return rows;\n        }, [])\n      }\n    : undefined\n}\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        7168,
+        240
+      ],
+      "id": "7897ba6e-3ba8-4b78-b794-f63ae99a063a",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8bc528d1-e8d8-4b21-91a4-f761256df36f",
+              "name": "message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "feeee6e8-1948-4e35-ac61-fb9305f8dd9a",
+              "name": "fromId",
+              "value": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        48
+      ],
+      "id": "f7d6917e-a414-40ab-bec5-65870184fe0c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d16211aa-9545-47b5-9e1f-3d80d5259f47",
+              "name": "message",
+              "value": "={{ $('Telegram Trigger').item.json.callback_query.data }}",
+              "type": "string"
+            },
+            {
+              "id": "5541ed9f-7d22-439b-a443-bedd530378e9",
+              "name": "fromId",
+              "value": "={{ $('Telegram Trigger').item.json.callback_query.from.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        -144
+      ],
+      "id": "7daa3d15-46de-4a37-9aef-f691046e6cc7",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8a7c9b18-fef0-4be3-ba14-793f2f8801f0",
+              "name": "message",
+              "value": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "39a0f4c2-fdb3-4f23-8a90-6c33c53d5d1f",
+              "name": "fromId",
+              "value": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        -336
+      ],
+      "id": "9248a1e3-53f6-4da3-9d17-a0d5d56ba3d7",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6fb5ce0-bdeb-4868-8fe9-7ea9fbf0a6e3",
+              "name": "botToken",
+              "value": "8667403312:AAEe8x9nJJkU4PZY2cms8sDsMmxvcS5n1u8",
+              "type": "string"
+            },
+            {
+              "id": "5c3ab46a-5b9b-417a-ba68-68f31bcc9aa5",
+              "name": "systemPrompt",
+              "value": "ТЫ — AI-СПЕЦИАЛИСТ ПО СБОРУ БРИФОВ ДЛЯ РАЗРАБОТКИ AI-АГЕНТОВ.\n\nЗадача — собрать полный бриф через диалог. Никогда не возвращайся к полям с \"не определено\".\n\n────────────────\nКРИТИЧЕСКОЕ ПРАВИЛО #1: НИКОГДА НЕ ПОВТОРЯЙ ВОПРОСЫ\n────────────────\n\nЕсли пользователь ответил:\n• \"не знаю\", \"не определено\", \"потом\", \"нужен совет\", \"решится позже\"\n→ Запиши \"не определено\" и ПЕРЕЙДИ К СЛЕДУЩЕМУ ПОЛЮ навсегда.\n\nНИКОГДА не спрашивай повторно такие поля.\n\n────────────────\nКРИТИЧЕСКОЕ ПРАВИЛО #2: ДИНАМИЧЕСКИЙ БРИФ\n────────────────\n\nПоказывай ТОЛЬКО релевантный раздел \"Детали агента\" по выбранному типу:\n• Тип \"голосовой\" → только голосовые детали\n• Тип \"текстовый\" → только текстовые детали  \n• Тип \"не определено\" → раздел не показывай\n\n────────────────\nСТРУКТУРА БРИФА (строго HTML)\n────────────────\n\n<h1>БРИФ НА РАЗРАБОТКУ AI-АГЕНТА</h1>\n\n<h2>1. Компания</h2><ul><li>название: [или \"не заполнено\"]</li><li>сайт: [или \"не заполнено\"]</li><li>ниша/продукт: [или \"не заполнено\"]</li><li>география: [или \"не заполнено\"]</li><li>целевая аудитория: [или \"не заполнено\"]</li></ul>\n\n<h2>2. Контакты</h2><ul><li>ответственное лицо: [или \"не заполнено\"]</li><li>должность: [или \"не заполнено\"]</li><li>email: [или \"не заполнено\"]</li><li>телефон: [или \"не заполнено\"]</li><li>желаемый канал связи: [или \"не заполнено\"]</li></ul>\n\n<h2>3. Цель AI-агента</h2><ul><li>задачи агента: [или \"не заполнено\"]</li><li>как процесс сейчас: [или \"не заполнено\"]</li><li>как должно быть после: [или \"не заполнено\"]</li></ul>\n\n<h2>4. Тип агента</h2><ul><li>тип: [голосовой/текстовый/другое или \"не заполнено\"]</li></ul>\n\n[ТОЛЬКО если тип выбран]\n<h2>5. Детали [голосового/текстового] агента</h2>\n[голосовой: формат звонков, сценарии, фразы клиентов, телефония, CRM, интеграции, языки, время звонков, юр. ограничения]\n[текстовый: каналы, типы запросов, база знаний, стиль общения, формальность, на ты/вы]\n[все поля: значение или \"не заполнено\"]\n\n<h2>6. Ограничения</h2><ul><li>технические: [или \"не заполнено\"]</li><li>юридические: [или \"не заполнено\"]</li><li>брендовые: [или \"не заполнено\"]</li></ul>\n\n<h2>7. KPI проекта</h2><ul><li>KPI: [или \"не заполнено\"]</li></ul>\n\n<h2>8. Статус</h2><ul><li>Заполнен: [да/нет]</li><li>недостающие поля: [список или \"отсутствуют\"]</li></ul>\n\n────────────────\nФОРМАТ ОТВЕТА (строго!)\n────────────────\n\nmessage: [\"Записал.\" / \"Обновлено.\"] — макс. 20 символов, без ?\n\nnext_question: РОВНО 1 вопрос по ближайшему незаполненному полю\n\nanswers: [варианты ≤25 символов] ИЛИ null\n\nphone: [из контактов] ИЛИ null\nemail: [из контактов] ИЛИ null\n\n────────────────\nЛОГИКА ДИАЛОГА\n────────────────\n\n1. Иди строго по порядку разделов 1→8\n2. Пропускай \"не определено\" навсегда  \n3. После типа агента → только его детали\n4. completed=true когда все релевантные поля заполнены:\n   - next_question=null\n   - answers=null  \n   - message=\"Бриф готов.\"\n\n────────────────\nАВТО-КОНТРОЛЬ ПЕРЕД ОТПРАВКОЙ\n────────────────\n\n✓ message: <20 символов, без \"?\"\n✓ next_question: ровно 1 вопрос  \n✓ Нет повторных вопросов по \"не определено\"\n✓ Показан только 1 блок \"Детали агента\" \n✓ phone/email взяты из брифа правильно\n✓ completed=true только при 100% заполнении всех релевантных полей (не осталось полей \"не заполнено\")\n",
+              "type": "string"
+            },
+            {
+              "id": "bb852356-65b4-4ea9-8786-e2c214b0a1e5",
+              "name": "responseFormat",
+              "value": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"required\": [\n    \"message\",\n    \"brief\",\n    \"phone\",\n    \"email\",\n    \"completed\",\n    \"next question\",\n    \"answers\"\n  ],\n  \"properties\": {\n    \"message\": {\n      \"type\": \"string\",\n      \"description\": \"Краткий ответ пользователю\"\n    },\n    \"brief\": {\n      \"type\": \"string\",\n      \"description\": \"ПОЛНЫЙ текущий текст брифа в HTML формате\"\n    },\n    \"phone\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"Телефон контактного лица\"\n    },\n    \"email\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"Email контактного лица\"\n    },\n    \"completed\": {\n      \"type\": \"boolean\",\n      \"description\": \"Завершён ли сбор брифа\"\n    },\n    \"next question\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"РОВНО ОДИН следующий вопрос\"\n    },\n    \"answers\": {\n      \"type\": [\"array\", \"null\"],\n      \"description\": \"Варианты для кнопок Telegram\",\n      \"items\": {\n        \"type\": \"string\",\n        \"maxLength\": 30\n      }\n    }\n  },\n  \"additionalProperties\": false\n}",
+              "type": "string"
+            },
+            {
+              "id": "63d644d0-2712-4ff4-bef2-308325d7a26b",
+              "name": "contextWindowLength",
+              "value": 20,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -608,
+        -144
+      ],
+      "id": "fe835a5d-ee63-40da-8e3f-d674ef273120",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.document.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        512
+      ],
+      "id": "f6e073a6-2974-4eae-841b-ad3c1d7faaff",
+      "name": "Get a file1",
+      "webhookId": "cb82cfb6-5958-421e-b60d-8cd95646052e",
+      "credentials": {
+        "telegramApi": {
+          "id": "lCnuMnF7kl8mR1RV",
+          "name": "@reactor_brief_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "GPT-5-NANO"
+        },
+        "responses": {
+          "values": [
+            {
+              "type": "file",
+              "fileType": "fileId",
+              "fileId": "={{ $json.id }}"
+            },
+            {
+              "role": "system",
+              "content": "Ты — система точного извлечения текста из предоставленного файла.\n\nИзвлеки **весь** доступный читаемый текст полностью, от начала до конца файла.\n\nТребования к ответу:\n\n* Верни только извлечённый текст.\n* Ничего не добавляй и не поясняй.\n* Не пропускай абзацы, страницы, сноски, подписи, таблицы и скрытые текстовые блоки.\n* Сохраняй исходный порядок и структуру (абзацы, переносы строк).\n* Если текст расположен на нескольких страницах или слоях, извлеки всё последовательно.\n* Если текст отсутствует, верни пустой ответ.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        768
+      ],
+      "id": "0f9e44f5-2faf-4abe-b7d1-f1402635e161",
+      "name": "Message a model",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        768
+      ],
+      "id": "7153129f-beae-4712-ab6b-797ec118e748",
+      "name": "Upload a file",
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Upload a file').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        768
+      ],
+      "id": "903595d0-9b71-4236-bec9-d9edfb13ed51",
+      "name": "Delete a file",
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c28bf9a-288d-41c5-94cf-be43043edc76",
+              "name": "message",
+              "value": "={{ $('Telegram Trigger').item.json.message.caption }}\n{{ $('Message a model').item.json.output[0].content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "cb28d00c-7b5c-488d-beb0-3b6394cb016f",
+              "name": "fromId",
+              "value": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        768
+      ],
+      "id": "5d248e0e-9cf4-4555-bd4a-e141782d148f",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.document.mime_type }}",
+                    "rightValue": "text/plain",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1705fe49-c5f1-491c-af04-bae912110815"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text/plain"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6be5e8ff-44d1-46d3-a649-31ba1469c06f",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.document.mime_type }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "application/pdf"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1e394091-a60e-4310-86aa-317208d8adee",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "other"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        496
+      ],
+      "id": "b19ff8b8-17c5-426d-81b9-eeeb6e13448a",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        240
+      ],
+      "id": "f25e785b-ee4e-4f8e-abf5-f28c5928198d",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b02877bc-e40f-42d2-a194-1c19c99ec204",
+              "name": "message",
+              "value": "={{ $('Telegram Trigger').item.json.message.caption }}\n{{ $json.data }}",
+              "type": "string"
+            },
+            {
+              "id": "4845ab25-164f-4e63-a472-7bfb2c3108ec",
+              "name": "fromId",
+              "value": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        240
+      ],
+      "id": "f541bce6-db5f-4c9b-add4-a619d3afce1d",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        432
+      ],
+      "id": "da64cec4-930f-429c-80e8-6431a1a03829",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b02877bc-e40f-42d2-a194-1c19c99ec204",
+              "name": "message",
+              "value": "={{ $('Telegram Trigger').item.json.message.caption }}\n{{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "4845ab25-164f-4e63-a472-7bfb2c3108ec",
+              "name": "fromId",
+              "value": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        432
+      ],
+      "id": "05ea0b1b-fd94-4a95-bd2f-2ed946481e15",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1KWWlIZnzj7Nz5rPaueyiW8l9TVp3Ag1-",
+          "mode": "list",
+          "cachedResultName": "n8n-test",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1KWWlIZnzj7Nz5rPaueyiW8l9TVp3Ag1-"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4800,
+        240
+      ],
+      "id": "d94c5989-4101-4753-81e3-668b10682d7b",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $('Edit Fields3').first().json.output.brief;\n\n\nreturn [\n  {\n    json: {},\n    binary: {\n      data: {\n        data: Buffer.from(html).toString('base64'),\n        mimeType: 'text/html'\n      }\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4576,
+        240
+      ],
+      "id": "d0c21e3e-b1dd-4424-a2d8-8de1b3d0340f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://www.googleapis.com/drive/v2/files/{{ $json.id }}/copy?convert=true&supportsAllDrives=true",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
+        "options": {}
+      },
+      "id": "c19fbcda-9d1f-4579-a018-a7957788e494",
+      "name": "Convert MS files to Google Docs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        5024,
+        240
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "zlsTc1aaazvHTLrf",
+          "name": "n8n-test"
+        },
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Convert MS files to Google Docs').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        5248,
+        240
+      ],
+      "id": "e24cef33-1e4c-4034-90b3-59572928a82b",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Get row(s)1').item.json.googleDocId }}",
+          "mode": "id"
+        },
+        "changeFileContent": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        5472,
+        240
+      ],
+      "id": "006f0403-5d63-444c-bd16-fe3f1bd55aaf",
+      "name": "Update file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Upload file').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        5696,
+        240
+      ],
+      "id": "539353fb-b978-4a0d-b9c3-6465276cb191",
+      "name": "Delete a file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Convert MS files to Google Docs').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        5920,
+        240
+      ],
+      "id": "3b66441e-b087-4a32-9496-c094412be71f",
+      "name": "Delete a file2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=sessionId",
+              "keyValue": "={{ $('Get row(s)').item.json.currentKey }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "messages": "={{ $('Get row(s)3').item.json.messages ? $('Get row(s)3').item.json.messages : \"\" }}\n\nAI:\n{{ $('Edit Fields3').item.json.output['next question'] }}",
+            "brief": "={{ $json.output.brief }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sessionId",
+              "displayName": "sessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "messages",
+              "displayName": "messages",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "googleDocId",
+              "displayName": "googleDocId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "brief",
+              "displayName": "brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4128,
+        240
+      ],
+      "id": "5dce9c30-6f99-491a-a207-8390f9aac8d8",
+      "name": "Update row(s)"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "messages": "=AI:\nПривет! Я помощник по подготовке брифа на разработку агента. Что вам нужно?",
+            "sessionId": "={{ $json.currentKey }}",
+            "googleDocId": "={{ $('Create a document').item.json.id }}",
+            "userId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+            "username": "={{ $('Telegram Trigger').item.json.message.from.username }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sessionId",
+              "displayName": "sessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "messages",
+              "displayName": "messages",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "googleDocId",
+              "displayName": "googleDocId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "brief",
+              "displayName": "brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        -528
+      ],
+      "id": "ab683079-7e50-4861-8e1d-a81ecf375b9d",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sessionId",
+              "keyValue": "={{ $json.currentKey }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1984,
+        240
+      ],
+      "id": "7327c199-83e9-4850-a2fc-60e30751d502",
+      "name": "Get row(s)1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "xYTcec1t0JmKTXu7naWgN",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/xYTcec1t0JmKTXu7naWgN",
+          "cachedResultName": "TG typing loop"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "waitFor": "={{ $execution.id }}",
+            "fromId": "={{ $('Edit Fields').item.json.fromId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fromId",
+              "displayName": "fromId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "waitFor",
+              "displayName": "waitFor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1984,
+        48
+      ],
+      "name": "Call TG Typing Loop",
+      "id": "4ab8bb43-3e51-4b25-bb9f-e3250365c9a1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PFvZlTAxcOlbm6Gw",
+          "mode": "list",
+          "cachedResultName": "TG typing loop",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/PFvZlTAxcOlbm6Gw"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "waitFor",
+              "keyValue": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "isDone": true
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "waitFor",
+              "displayName": "waitFor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "isDone",
+              "displayName": "isDone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6144,
+        240
+      ],
+      "id": "0ff39c50-6a61-41df-af3e-a75eb07ba975",
+      "name": "Update row(s)2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "xYTcec1t0JmKTXu7naWgN",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/xYTcec1t0JmKTXu7naWgN",
+          "cachedResultName": "TG typing loop"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "waitFor": "={{ $execution.id }}",
+            "fromId": "={{ $('Telegram Trigger').item.json.message.from.id.toString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fromId",
+              "displayName": "fromId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "waitFor",
+              "displayName": "waitFor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        576
+      ],
+      "name": "Call TG Typing Loop1",
+      "id": "31eeb62f-f831-42f3-9309-2a423b5dcef0"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PFvZlTAxcOlbm6Gw",
+          "mode": "list",
+          "cachedResultName": "TG typing loop",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/PFvZlTAxcOlbm6Gw"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "waitFor",
+              "keyValue": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "isDone": false,
+            "waitFor": "={{ $execution.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "waitFor",
+              "displayName": "waitFor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "isDone",
+              "displayName": "isDone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        576
+      ],
+      "id": "05021a60-38f2-4a3b-9ece-6c215836ac9d",
+      "name": "Upsert row(s)1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PFvZlTAxcOlbm6Gw",
+          "mode": "list",
+          "cachedResultName": "TG typing loop",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/PFvZlTAxcOlbm6Gw"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "waitFor",
+              "keyValue": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "isDone": false,
+            "waitFor": "={{ $execution.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "waitFor",
+              "displayName": "waitFor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "isDone",
+              "displayName": "isDone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        48
+      ],
+      "id": "f52ef275-1173-4893-ba7f-ef4095b08034",
+      "name": "Upsert row(s)2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PFvZlTAxcOlbm6Gw",
+          "mode": "list",
+          "cachedResultName": "TG typing loop",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/PFvZlTAxcOlbm6Gw"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "waitFor",
+              "keyValue": "={{ $execution.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "isDone": true
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "waitFor",
+              "displayName": "waitFor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "isDone",
+              "displayName": "isDone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        768
+      ],
+      "id": "a7660ae1-8e6f-4e98-aa70-06a7c88b767f",
+      "name": "Update row(s)3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "content": "## Системные переменные:\n- тг токен\n- системный промпт\n- формат ответа",
+        "height": 288,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -272
+      ],
+      "id": "d6327ca8-9d49-4ad9-8017-f0aa56582247",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Обработка /start:\n- Создание записей в таблицах\n- Создание документа\n- Отправка сообщения",
+        "height": 288,
+        "width": 1664
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -656
+      ],
+      "id": "d960e369-8793-43ff-925f-734e2a61e93b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Message и fromId\nзадаются по разному, в зависимости от типа входящего сообщения",
+        "height": 1424,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -1120
+      ],
+      "id": "cc56f011-d238-42c6-a4c4-14f3ff0c9515",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Транскрибация голосового сообщения",
+        "height": 208,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        784,
+        0
+      ],
+      "id": "a46214d5-7c8e-4def-a6b4-04da286e6553",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Извлечения текста из документов",
+        "height": 272,
+        "width": 384
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        416
+      ],
+      "id": "cf32e450-60fd-4ace-a8e2-50535e6d54a7",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## pdf и txt \nИзвлекаем напрямую",
+        "height": 368,
+        "width": 608
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        944,
+        224
+      ],
+      "id": "0b7a67d4-4239-4a1e-b01d-6929f2437e4e",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Typing\nДля длительной обработки запускаем подпроцесс с отображением typing...",
+        "height": 256,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        208,
+        480
+      ],
+      "id": "8fd066ba-def6-4ce1-af89-40d3f63a9230",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Извлечение текста при помощи ChatGPT\nЗаливем файл, извлекаем текст, удаляем файл, обновляем таблицу для остановки typing...",
+        "height": 224,
+        "width": 1600
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        48,
+        704
+      ],
+      "id": "2c3c3a84-a7e7-46c0-894b-e4bf8d6e7eb6",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Typing\nДля длительной обработки запускаем подпроцесс с отображением typing...",
+        "height": 288,
+        "width": 768
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1536,
+        -80
+      ],
+      "id": "9d745cf9-87ab-4c9a-a273-570b15602a99",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Текущая сессия, ссылка на бриф, история переписки\nМожно ограничить историю в ноде Edit Field, пока в лимиты контекста не упирался",
+        "height": 320,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        80
+      ],
+      "id": "92a435d0-a77a-42f7-9361-b4d94b68337b",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Основной запрос к ChatGPT \nОбработка сообщения пользователя, генерация брифа, получение следующего вопроса, вариантов ответов\nПеревод ответа в json-объект",
+        "height": 304,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        96
+      ],
+      "id": "4c1213c3-d0aa-43ec-8db9-6578842ddb25",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Обновление истории переписки\nперед обновлением получаем актуальную переписку",
+        "height": 256,
+        "width": 432
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3856,
+        144
+      ],
+      "id": "b40d5003-9b6c-4540-ab17-531ff76eab53",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Обновление гугл-дока с брифом\n- Удаляем содержимое брифа\n- Заливаем новое содержимое во временные файл на драйве\n- Конвертируем временный файл в документ\n- Скачиваем содержимое сконвертированного документа\n- Обновляем файл с брифом\n- Удаляем временные файлы",
+        "height": 336,
+        "width": 1792
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4288,
+        64
+      ],
+      "id": "5ed425ff-a415-4250-aab6-00ecbef13fc9",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Остановка typing...",
+        "height": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6080,
+        64
+      ],
+      "id": "e80b9012-533e-4883-92dd-6ae50cc0e84b",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## Сообщение пользователю\nЕсли просто текст, отправляем напрямую\nЕсли динапический набор кнопок с вариантами ответов, то выполняем http-реквест, так как обычная нода такую возможность не поддерживает",
+        "height": 512,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6736,
+        80
+      ],
+      "id": "5c2f3525-d455-464b-ab6d-f40e984ff8a5",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## Тип собщений\n- /start команда\n- текст\n- колбек кнопок\n- голос\n- документ",
+        "height": 448,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        -384
+      ],
+      "id": "f9253ffc-70e9-4d3e-bb8d-835be799f37e",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Edit Fields2').item.json.message }}"
+            },
+            {
+              "role": "system",
+              "content": "={{ $('Edit Fields7').item.json.systemPrompt }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "builtInTools": {},
+        "options": {
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low"
+            }
+          },
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "schema": "={{ $('Edit Fields7').item.json.responseFormat }}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        3328,
+        240
+      ],
+      "id": "e7fd2517-f974-40f8-89d3-e143f89cff52",
+      "name": "Message a model1",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b3c2f272-445c-4b5b-bd27-65bd7a11dd3e",
+              "leftValue": "={{ $('Edit Fields3').item.json.output.completed }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        6368,
+        240
+      ],
+      "id": "27ee9776-9586-4701-a7d1-70dee7048cd3",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        6592,
+        48
+      ],
+      "id": "4fb70efd-f24a-4bee-9716-2ea2e16f24cb",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "content": "## Бриф собран\nTODO:\n- CRM",
+        "height": 352,
+        "width": 1088
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6384,
+        -144
+      ],
+      "id": "3db71e28-5367-45b5-b71e-15adefc45cc5",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Edit Fields').item.json.fromId }}",
+        "text": "={{ $('Edit Fields3').item.json.output.message }}\n\n{{ $json.output[0].content[0].text }}",
+        "replyMarkup": "=",
+        "forceReply": {},
+        "replyKeyboardOptions": {},
+        "replyKeyboardRemove": {},
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        7168,
+        48
+      ],
+      "id": "80de22df-a7a8-4d48-ad87-7736be94ce3b",
+      "name": "Send a text message3",
+      "webhookId": "49860489-e04b-4af7-af20-637b3217d906",
+      "credentials": {
+        "telegramApi": {
+          "id": "lCnuMnF7kl8mR1RV",
+          "name": "@reactor_brief_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Edit Fields3').item.json.output.brief }}"
+            },
+            {
+              "role": "system",
+              "content": "Отформатируй в html, используй ТОЛЬКО эти теги, ВСЯКИЕ ДРУГИЕ ТЕГИ СТРОГО ЗАПРЕЩЕНЫ:\n<b>bold</b>, <strong>bold</strong>\n<i>italic</i>, <em>italic</em>\n<u>underline</u>, <ins>underline</ins>\n<s>strikethrough</s>, <strike>strikethrough</strike>, <del>strikethrough</del>\n<span class=\"tg-spoiler\">spoiler</span>, <tg-spoiler>spoiler</tg-spoiler>\n<b>bold <i>italic bold <s>italic bold strikethrough <span class=\"tg-spoiler\">italic bold strikethrough spoiler</span></s> <u>underline italic bold</u></i> bold</b>\n<a href=\"http://www.example.com/\">inline URL</a>\n<a href=\"tg://user?id=123456789\">inline mention of a user</a>\n<tg-emoji emoji-id=\"5368324170671202286\">👍</tg-emoji>\n<tg-time unix=\"1647531900\" format=\"wDT\">22:45 tomorrow</tg-time>\n<tg-time unix=\"1647531900\" format=\"t\">22:45 tomorrow</tg-time>\n<tg-time unix=\"1647531900\" format=\"r\">22:45 tomorrow</tg-time>\n<tg-time unix=\"1647531900\">22:45 tomorrow</tg-time>\n<code>inline fixed-width code</code>\n<pre>pre-formatted fixed-width code block</pre>\n<pre><code class=\"language-python\">pre-formatted fixed-width code block written in the Python programming language</code></pre>\n<blockquote>Block quotation</blockquote>\n<blockquote expandable>Expandable block quotation</blockquote>\n\nПРИМЕЧАНИЕ: НЕ ИСПОЛЬЗУЙ никакие другие теги (<h1>, <br>, <ul>, <li> и т.д.). Если нужно разделить строки - используй переносы строк. Только перечисленные выше теги разрешены!\n\nОтвет - ТОЛЬКО отформатированный текст без дополнительных комментариев."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        6816,
+        48
+      ],
+      "id": "95317128-5246-4fee-862a-7cf888f14e7e",
+      "name": "Message a model2",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ktY0MunH1VWVGqNO",
+          "mode": "list",
+          "cachedResultName": "brief_bot_message_processing",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/ktY0MunH1VWVGqNO"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "processing": false,
+            "userId": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "processing",
+              "displayName": "processing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1312,
+        -528
+      ],
+      "id": "1c40e5c4-0eb4-4309-bb9e-67fd8fb89078",
+      "name": "Upsert row(s)3"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ktY0MunH1VWVGqNO",
+          "mode": "list",
+          "cachedResultName": "brief_bot_message_processing",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/ktY0MunH1VWVGqNO"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Edit Fields').item.json.fromId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2656,
+        240
+      ],
+      "id": "c2534da2-0aa8-4ac1-97e6-729a143a330a",
+      "name": "Get row(s)2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9c36acbc-ed69-435b-9c38-b3c5288028c7",
+              "leftValue": "={{ $json.processing }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2880,
+        240
+      ],
+      "id": "2659ea64-7414-4be6-b916-eda6ee6833d4",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ktY0MunH1VWVGqNO",
+          "mode": "list",
+          "cachedResultName": "brief_bot_message_processing",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/ktY0MunH1VWVGqNO"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "processing": true,
+            "userId": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "processing",
+              "displayName": "processing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3104,
+        240
+      ],
+      "id": "d8ea22b5-7449-4168-8754-cbad5f782d1d",
+      "name": "Upsert row(s)4"
+    },
+    {
+      "parameters": {
+        "content": "## Признак обработки  true",
+        "height": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3040,
+        64
+      ],
+      "id": "15cf7aa6-36e6-4c05-b969-8f47c4683ed0",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ktY0MunH1VWVGqNO",
+          "mode": "list",
+          "cachedResultName": "brief_bot_message_processing",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/ktY0MunH1VWVGqNO"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "processing": false,
+            "userId": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "processing",
+              "displayName": "processing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7392,
+        240
+      ],
+      "id": "fcaa32ef-8356-4dd4-bfd0-84e0a1a9b8b8",
+      "name": "Upsert row(s)5"
+    },
+    {
+      "parameters": {
+        "content": "## Признак обработки  false",
+        "height": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        7328,
+        64
+      ],
+      "id": "aab2ed24-caa7-468c-a53e-1f03e7e5a9dd",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sessionId",
+              "keyValue": "={{ $('Get row(s)').item.json.currentKey }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3904,
+        240
+      ],
+      "id": "43d9bb9e-73c3-4bc7-9e85-b0d790b01b45",
+      "name": "Get row(s)3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=sessionId",
+              "keyValue": "={{ $('Get row(s)').item.json.currentKey }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "messages": "={{ $('Get row(s)1').item.json.messages ? $('Get row(s)1').item.json.messages : \"\" }}\n\nHuman:\n{{ $('Edit Fields').item.json.message }}",
+            "brief": "={{ $json.output.brief }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sessionId",
+              "displayName": "sessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "messages",
+              "displayName": "messages",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "googleDocId",
+              "displayName": "googleDocId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "brief",
+              "displayName": "brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2208,
+        240
+      ],
+      "id": "c2c1be73-573d-438d-a38f-a6e7218e62b7",
+      "name": "Update row(s)1"
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "anyone",
+            "allowFileDiscovery": true
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        288,
+        -528
+      ],
+      "id": "eafccbf1-81bd-413a-adc1-9fa5ee2756ca",
+      "name": "Share file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cnyP0ilm0BE4mPIS",
+          "name": "Google Drive account n8n-test"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Share file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document1": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Delete a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a file": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload a file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upsert row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields9": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields10": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Convert MS files to Google Docs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert MS files to Google Docs": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Update file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update file": {
+      "main": [
+        [
+          {
+            "node": "Delete a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a file1": {
+      "main": [
+        [
+          {
+            "node": "Delete a file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a file2": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row(s)": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row(s)2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Call TG Typing Loop1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)2": {
+      "main": [
+        [
+          {
+            "node": "Call TG Typing Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row(s)3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Message a model2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model2": {
+      "main": [
+        [
+          {
+            "node": "Send a text message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)3": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)2": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Upsert row(s)4": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message3": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message2": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)3": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share file": {
+      "main": [
+        [
+          {
+            "node": "Update a document1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timeSavedPerExecution": 0,
+    "errorWorkflow": "AusOgntNGD7jexkjTnVGm"
+  },
+  "versionId": "28f7d742-5101-47c1-8ea6-b0843e8476ca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3cce16b48050dde1431064b2157fc82e5dfbf87dad0f2374a6365c36f3a68005"
+  },
+  "id": "4t0X2TgvSR_A-mp63_oTf",
+  "tags": []
+}
