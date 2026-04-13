@@ -1991,8 +1991,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1424,
-        672
+        1504,
+        624
       ],
       "id": "9d745cf9-87ab-4c9a-a273-570b15602a99",
       "name": "Sticky Note8"
@@ -2794,7 +2794,8 @@
         "rule": {
           "interval": [
             {
-              "field": "hours"
+              "field": "cronExpression",
+              "expression": "0 9-18 * * *"
             }
           ]
         }
@@ -2828,7 +2829,7 @@
             {
               "keyName": "updatedAt",
               "condition": "lt",
-              "keyValue": "={{ $now.minus({ hours: 1 }) }}"
+              "keyValue": "={{ $now.minus({ hours: 8 }) }}"
             }
           ]
         },
@@ -2845,8 +2846,8 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $json.userId }}",
-        "text": "Добрый день!\n\nОсталось совсем немного до завершения Вашего брифа на автоматизацию.\n\nКак только Вы его закончите, мы сразу начнём работать над решением, которое будет максимально полезно именно для Вас.\n\nБудет удобно — загляните и завершите, пожалуйста.\n\nСпасибо!",
+        "chatId": "={{ $('Get row(s)4').item.json.userId }}",
+        "text": "={{ $json.output[0].content[0].text }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -2854,7 +2855,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -384,
+        -16,
         2224
       ],
       "id": "c987009c-773f-40bc-abd7-5274c663e02f",
@@ -3243,7 +3244,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
-        "text": "Не смог распознать ссылку. Пришлите полную ссылку на гугл-документ",
+        "text": "Не смог распознать ссылку. Пришлите полную ссылку на гугл-документ или проверьте доступ",
         "additionalFields": {
           "appendAttribution": false,
           "parse_mode": "HTML"
@@ -3375,7 +3376,7 @@
       "parameters": {
         "content": "## Напоминалка о незаполненном брифе",
         "height": 480,
-        "width": 912
+        "width": 1280
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -3385,6 +3386,272 @@
       ],
       "id": "9231d929-795a-43b0-a113-14f069159529",
       "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "zhnURvA8bKcfz0Ro",
+          "mode": "list",
+          "cachedResultName": "brief_bot_session",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/zhnURvA8bKcfz0Ro"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $('Telegram Trigger').item.json.callback_query.from.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        256
+      ],
+      "id": "fa06722d-c656-40c6-9378-1e6068a7a829",
+      "name": "Get row(s)5"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sessionId",
+              "keyValue": "={{ $json.currentKey }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2464,
+        256
+      ],
+      "id": "2c746714-36fb-4667-acf8-3b04f88d5303",
+      "name": "Get row(s)6"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "itmIHg7JyZzz394s",
+          "mode": "list",
+          "cachedResultName": "brief_bot_messages",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/itmIHg7JyZzz394s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=sessionId",
+              "keyValue": "={{ $('Get row(s)5').item.json.currentKey }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "messages": "={{ $('Get row(s)6').item.json.messages ? $('Get row(s)6').item.json.messages : \"\" }}\n\nAI:\nЗапишите аудио-сообщение с ответами на вопросы.\n\n{{ $('Edit Fields7').item.json.questionsList }}",
+            "brief": "={{ $json.output.brief }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sessionId",
+              "displayName": "sessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "messages",
+              "displayName": "messages",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "googleDocId",
+              "displayName": "googleDocId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "brief",
+              "displayName": "brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2688,
+        256
+      ],
+      "id": "5213c2e4-4b12-4fd9-818e-116a0eb1de0f",
+      "name": "Update row(s)5"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Сгенерируй короткое напоминание о незавершённом заполнении брифа.\n\nТребования:\n- Текст должен быть похож по смыслу и структуре на образец, но каждый раз формулировки должны немного отличаться\n- Используй разные варианты приветствия (например: Добрый день, Здравствуйте и т.д.)\n- Перефразируй ключевые фразы (например: «осталось немного», «завершение брифа», «начнём работу»)\n- Сохраняй деловой, вежливый и дружелюбный тон\n- Текст должен быть кратким (5–7 строк)\n- Избегай повторения одинаковых формулировок между генерациями\n- Сохраняй смысл: бриф почти заполнен, после завершения начнётся работа, мягкий призыв закончить\n\nФормат ответа:\n- Только один вариант напоминания\n- Без пояснений, комментариев или дополнительных вариантов\n- Готовый текст сообщения\n\nПример структуры (не копировать дословно):\n1. Приветствие\n2. Сообщение, что осталось немного до завершения брифа\n3. Объяснение ценности завершения\n4. Мягкий призыв закончить\n5. Завершение/благодарность"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        2224
+      ],
+      "id": "5b64239e-d638-48a8-8dc2-f492ed811244",
+      "name": "Message a model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "HopFi9ncBe1Ugmm3",
+          "name": "OpenAi REACTOR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "zhnURvA8bKcfz0Ro",
+          "mode": "list",
+          "cachedResultName": "brief_bot_session",
+          "cachedResultUrl": "/projects/OUFImvCLGCdJqfel/datatables/zhnURvA8bKcfz0Ro"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $('Get row(s)4').item.json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "completed": false
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "currentKey",
+              "displayName": "currentKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "completed",
+              "displayName": "completed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        2224
+      ],
+      "id": "19911c19-e72c-4d68-be7d-c1c62b52d6a0",
+      "name": "Update row(s)6"
     }
   ],
   "pinData": {},
@@ -4103,7 +4370,7 @@
       "main": [
         [
           {
-            "node": "Send a text message1",
+            "node": "Message a model3",
             "type": "main",
             "index": 0
           }
@@ -4283,6 +4550,61 @@
           }
         ]
       ]
+    },
+    "Get row(s)5": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)6": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message5": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model3": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message1": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -4294,7 +4616,7 @@
     "timeSavedPerExecution": 0,
     "errorWorkflow": "AusOgntNGD7jexkjTnVGm"
   },
-  "versionId": "699bf9f3-d720-4ae3-b917-e0c29e32760d",
+  "versionId": "708c4667-105f-406f-bbd9-b3472e6450a4",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "3cce16b48050dde1431064b2157fc82e5dfbf87dad0f2374a6365c36f3a68005"
